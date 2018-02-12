@@ -27,13 +27,15 @@ public class Runner {
 
     public static void main(String[] args) {
 
-        final KafkaStream<ConsumerRecord<String, String>> src = new KafkaStream("demo-topic");
-        src.subscribe(
-                record -> {
-                    System.out.println("We got this:  " + record.value() + ", time: " + dateFormat.format(new Date(record.timestamp())));
-                },
-                Throwable::printStackTrace,
-                () -> {}
-        );
+        new KafkaStream<ConsumerRecord<String, String>>("demo-topic")
+                .subscribe(
+                        record -> {
+                            System.out.println("We got this:  " + record.value() + ", time: " + dateFormat.format(new Date(record.timestamp())));
+                        },
+                        Throwable::printStackTrace,
+                        () -> {
+                            System.out.println("DONE!");
+                        }
+                );
     }
 }
